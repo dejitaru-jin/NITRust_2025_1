@@ -1,9 +1,11 @@
+#![allow(unused_variables, unused_mut, dead_code)]
+
 use crate::filter::{Filter, FilterState};
 use std::fmt;
 
 // Custom error enum for ThermalReader
 #[derive(Debug)]
-enum ThermalReaderError {
+pub enum ThermalReaderError {
     HardwareReadError,
     ConsecutiveErrors,
     FilterError(FilterState),
@@ -20,7 +22,7 @@ impl fmt::Display for ThermalReaderError {
 }
 
 #[derive(Debug)]
-struct ThermalReader {
+pub struct ThermalReader {
     version: String,
     filter: Filter,
     consecutive_errors: u8,
@@ -31,7 +33,7 @@ struct ThermalReader {
 }
 
 impl ThermalReader {
-    fn new() -> ThermalReader {
+    pub fn new() -> ThermalReader {
         // Initialize with some simulated temperature readings
         let simulated_readings = vec![
             25, 26, 27, 28, 29, 30, 31, 32, 33,  // Valid readings to fill buffer
@@ -52,7 +54,7 @@ impl ThermalReader {
         }
     }
 
-    fn update_current_temp(&mut self) -> Result<i32, ThermalReaderError> {
+    pub fn update_current_temp(&mut self) -> Result<i32, ThermalReaderError> {
         // Get the next simulated reading
         let temp = self.get_next_reading();
         
@@ -71,7 +73,7 @@ impl ThermalReader {
         Ok(temp)
     }
     
-    fn read_filtered_temperature(&mut self) -> Result<i32, ThermalReaderError> {
+    pub fn read_filtered_temperature(&mut self) -> Result<i32, ThermalReaderError> {
         // Check if we have too many consecutive errors
         if self.consecutive_errors >= 3 {
             return Err(ThermalReaderError::ConsecutiveErrors);
@@ -87,6 +89,13 @@ impl ThermalReader {
                 // If filter is not ready, this is not considered an error
                 // Just return the last valid temperature or 0 if none
                 Ok(self.last_valid_temp)
+            },
+            // This case shouldn't happen given the current implementation of FilterState,
+            // but we need to handle it for exhaustive pattern matching
+            Err(FilterState::Ready) => {
+                // This is a logical error in our implementation
+                // If filter is ready, it shouldn't return an error with Ready state
+                Err(ThermalReaderError::FilterError(FilterState::Ready))
             }
         }
     }
