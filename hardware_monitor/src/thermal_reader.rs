@@ -90,11 +90,8 @@ impl ThermalReader {
                 // Just return the last valid temperature or 0 if none
                 Ok(self.last_valid_temp)
             },
-            // This case shouldn't happen given the current implementation of FilterState,
-            // but we need to handle it for exhaustive pattern matching
+            // This case shouldn't happen
             Err(FilterState::Ready) => {
-                // This is a logical error in our implementation
-                // If filter is ready, it shouldn't return an error with Ready state
                 Err(ThermalReaderError::FilterError(FilterState::Ready))
             }
         }

@@ -1,16 +1,12 @@
-#![allow(unused_variables, unused_mut, dead_code)]
-
 use hardware_monitor::codings;
 use hardware_monitor::filter;
 use hardware_monitor::system_alarm_handler;
 use hardware_monitor::thermal_reader;
 
-use hardware_monitor::filter::{Filter, FilterState};
 use hardware_monitor::system_alarm_handler::SystemAlarmHandler;
 use hardware_monitor::thermal_reader::ThermalReader;
 use std::{thread, time::Duration};
 
-// Constants for temperature thresholds
 const MIN_TEMP_THRESHOLD: i32 = 0;   // 0°C - underheating threshold
 const MAX_TEMP_THRESHOLD: i32 = 80;  // 80°C - overheating threshold
 const VALID_CODING_MIN: i32 = 1000;  // Minimum valid coding value
@@ -27,7 +23,6 @@ struct HardwareMonitor {
 
 impl HardwareMonitor {
     fn new(coding: i32) -> Result<HardwareMonitor, String> {
-        // Check if coding is plausible
         if coding < VALID_CODING_MIN || coding > VALID_CODING_MAX {
             return Err(format!("Invalid coding value: {}. Must be between {} and {}", 
                             coding, VALID_CODING_MIN, VALID_CODING_MAX));
@@ -84,12 +79,13 @@ pub fn get_version() -> String {
 }
 
 fn main() {
-    println!("Hardware Monitor System Starting...");
+    println!("================ Hardware Monitor System Starting... ================");
     println!("hardware_monitor version: {}", get_version());
     println!("filter version: {}", filter::get_version());
     println!("thermal_reader version: {}", thermal_reader::get_version());
     println!("system_alarm_handler version: {}", system_alarm_handler::get_version());
     println!("codings version: {}", codings::get_version());
+    println!("=====================================================================");
     
     // Example coding value
     let coding = 1234;

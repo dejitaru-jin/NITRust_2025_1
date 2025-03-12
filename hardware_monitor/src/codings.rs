@@ -1,4 +1,3 @@
-#![allow(unused_variables, unused_mut, dead_code)]
 
 #[derive(Debug)]
 pub struct Codings {

@@ -1,5 +1,3 @@
-#![allow(unused_variables, unused_mut, dead_code)]
-
 use std::time::{SystemTime, UNIX_EPOCH};
 use std::fmt;
 
@@ -53,7 +51,6 @@ impl SystemAlarmHandler {
             timestamp: SystemAlarmHandler::get_current_timestamp(),
         };
         
-        // Log the alarm
         self.log_alarm(&alarm);
     }
     
@@ -68,7 +65,6 @@ impl SystemAlarmHandler {
             timestamp: SystemAlarmHandler::get_current_timestamp(),
         };
         
-        // Log the alarm
         self.log_alarm(&alarm);
     }
     
@@ -87,7 +83,6 @@ impl SystemAlarmHandler {
         println!("╚════════════════════════════════════════════════════════╝");
     }
     
-    // Helper to get current timestamp
     fn get_current_timestamp() -> u64 {
         SystemTime::now()
             .duration_since(UNIX_EPOCH)
@@ -95,7 +90,6 @@ impl SystemAlarmHandler {
             .as_secs()
     }
     
-    // Get total number of alarms reported
     pub fn get_alarm_count(&self) -> usize {
         self.alarm_count
     }
